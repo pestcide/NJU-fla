@@ -44,6 +44,8 @@ int main(int argc, char* argv[]){
                 break;
         }
     }
+    char *input;
+    char *tm_path;
     if (argc==optional+3){
         tm_path=argv[optional+1];
         input=argv[optional+2];
@@ -54,4 +56,6 @@ int main(int argc, char* argv[]){
         print_help();
         return 1;
     }
+
+    Turing_machine TM(tm_path);
 }
