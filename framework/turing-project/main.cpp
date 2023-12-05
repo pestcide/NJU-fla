@@ -29,6 +29,7 @@ int main(int argc, char* argv[]){
     // return 0;
     int optional=0;
     int optc;
+    bool verbose=false;
     while ((optc=getopt_long(argc,argv,"hv",longopts,NULL))!=-1){
         switch(optc){
             case 'h':
@@ -38,8 +39,9 @@ int main(int argc, char* argv[]){
                 break;
             case 'v':
                 optional++;
-                verbose_test();
-                exit(0);
+                verbose=true;
+                //verbose_test();
+                //exit(0);
                 break;
         }
     }
@@ -56,5 +58,5 @@ int main(int argc, char* argv[]){
         return 1;
     }
 
-    Turing_machine TM(tm_path);
+    Turing_machine TM(tm_path,verbose);
 }

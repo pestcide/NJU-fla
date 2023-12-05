@@ -22,6 +22,10 @@ typedef struct
 }delta;
 
 class Turing_machine{
+private:
+    string verbose_string;
+    bool verbose_started=false;
+    int line_num=0;
 protected:
     set<string> Q;
     set<string> S;
@@ -38,8 +42,9 @@ private:
     void _set(string str);
     void _check_syntax(int &linecnt,string str);
     void _checkcheck(string token,int mode);
+    void syntaxerror();
 public:
-    Turing_machine(char *path);
+    Turing_machine(char *path,bool verbose);
     void print_TM();
 };
 

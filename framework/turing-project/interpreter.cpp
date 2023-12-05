@@ -5,7 +5,14 @@
 #define SYMBOL 3 
 using namespace std;
 
-inline void syntaxerror() {cerr << "syntax error" << endl;exit(1);}
+void Turing_machine::syntaxerror() {
+    cerr << "syntax error" << endl;
+    if (verbose_started) {
+        cerr << "error in line " << line_num  << endl;
+        cerr << verbose_string << endl;
+    }
+    exit(1);
+}
 
 inline bool check(int mode,char t)
 {
@@ -53,13 +60,18 @@ void Turing_machine::_checkcheck(string token,int mode){
     }
 }
 
-Turing_machine::Turing_machine(char *path){
+Turing_machine::Turing_machine(char *path,bool verbose){
     //cout << "entered TM" << endl;
+    verbose_started=verbose;
     fstream fs;
     fs.open(path);
     string s;
     int linecnt=0;
     while (getline(fs,s)){
+        if (verbose_started) {
+            line_num++;
+            verbose_string=s;
+        }
         //cout << s << endl;
         //除去字符串前部空格以及';'后面字符
         if (s.empty()) continue;
