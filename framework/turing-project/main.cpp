@@ -1,7 +1,6 @@
 #include <iostream>
 #include <getopt.h> //included for `getopt_long`
 #include <stdio.h>
-#include <stdlib.h> //included for `EXIT_SUCCESS|EXIT_FAILURE`
 #include "interpreter.h"
 #include "simulator.h"
 using namespace std;
@@ -35,12 +34,12 @@ int main(int argc, char* argv[]){
             case 'h':
                 optional++;
                 print_help();
-                exit(EXIT_SUCCESS);
+                exit(0);
                 break;
             case 'v':
                 optional++;
                 verbose_test();
-                exit(EXIT_SUCCESS);
+                exit(0);
                 break;
         }
     }
