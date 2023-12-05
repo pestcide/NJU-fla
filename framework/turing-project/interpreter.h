@@ -33,9 +33,11 @@ protected:
     vector<delta> delta_functions;
 private:
     void _print_set(set<string> strset);
-    void _StringSplit(string str,const char split,set<string> &output);
+    void _StringSplit(string str,const char split,set<string> &output,int mode);
     void _addDelta(string str,vector<delta> &output);
     void _set(string str);
+    void _check_syntax(int &linecnt,string str);
+    void _checkcheck(string token,int mode);
 public:
     Turing_machine(char *path);
     void print_TM();
