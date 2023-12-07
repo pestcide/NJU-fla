@@ -1,5 +1,6 @@
 #include "simulator.h"
 #include <iostream>
+#include <stdio.h>
 using namespace std;
 
 simulator::simulator(char *path,char *input,bool verbose):Turing_machine(path,verbose){
@@ -13,7 +14,8 @@ void simulator::_check_input(){
     {
         if (!_inS(_input[i])) 
         {
-            cerr << "illegal input string" << endl;
+            if (!verbose_started)
+                cerr << "illegal input string" << endl;
             if (verbose_started){
                 cerr << "Input: " << _input << endl;
                 cerr << "==================== ERR ====================" << endl;
@@ -44,6 +46,8 @@ void simulator::run(){
     _check_input();
     _init();
     _transform();
+    if (!verbose_started)
+        nomal_print();
 }
 
 void simulator::_init(){
@@ -109,11 +113,29 @@ void simulator::_move_head(int delta_idx){
 void simulator::_transform(){
     int delta_idx=_find_delta();
     while (delta_idx!=-1){
+        if (verbose_started)
+            verbose_print();
         step++;
         _write_over(delta_idx);
         _update_state(delta_idx);
         _move_head(delta_idx);
         delta_idx=_find_delta();
+    }
+    if (verbose_started){
+        verbose_print();
+        if (acc) 
+            cout << "ACCEPTED" << endl;
+        else 
+            cout << "UNACCEPTED" << endl;
+        cout << "Result: ";
+        string output=tape[0];
+        while (output.size()>0&&output.back()=='_') output.pop_back();
+        while (output.size()>0&&output[0]=='_') {
+            if (output.size()==1) output.pop_back();
+            else output=output.substr(1);
+        }
+        cout << output << endl;
+        cout << "==================== END ====================" << endl;
     }
 }
 
@@ -130,4 +152,50 @@ void simulator::nomal_print()
         else output=output.substr(1);
     }
     cout << output << endl;
+}
+
+void simulator::_print_tape(int num){
+    string idx="Index";
+    string t="Tape";
+    string h="Head";
+    string output=tape[num];
+    int begin=0;
+    while (begin<output.size()){
+        if (output[begin]=='_'&&begin!=head[num]+zero_pos[num])
+            begin++;
+        else break;
+    }
+    if (begin==output.size()) begin--;
+    int end=output.size()-1;
+    while (end>=0){
+        if (output[end]=='_'&&end!=head[num]+zero_pos[num])
+            end--;
+        else break;
+    }
+    if (end==-1) end++;
+    printf("%-7s %s",(idx+char('0'+num)).c_str(),": ");
+    for (int i=begin;i<=end;++i){
+        cout << ((i-zero_pos[num]<0)?(zero_pos[num]-i):i-zero_pos[num]) << " ";
+    }
+    cout << endl;
+    printf("%-7s %s",(t+char('0'+num)).c_str(),": ");
+    for (int i=begin;i<=end;++i){
+        cout << output[i] << ((i-zero_pos[num]<=-10||i-zero_pos[num]>=10)?"  ":" ");
+    }
+    cout << endl;
+    printf("%-7s %s",(h+char('0'+num)).c_str(),": ");
+    for (int i=begin;i<=end;++i){
+        cout << ((head[num]+zero_pos[num]==i)?"^":" ") << ((i-zero_pos[num]<=-10||i-zero_pos[num]>=10)?"  ":" ");
+    }
+    cout << endl;
+}
+
+void simulator::verbose_print()
+{
+    printf("%-7s %s %d\n","Step",":",step);
+    printf("%-7s %s %s\n","State",":",state.c_str());
+    printf("%-7s %s %s\n","Acc",":",(acc?"Yes":"No"));
+    for (int i=0;i<N;++i)
+        _print_tape(i);
+    cout << "---------------------------------------------" << endl;
 }

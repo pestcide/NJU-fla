@@ -31,9 +31,11 @@ private:
     //!\param delta_idx: matched_delta's idx
     void _move_head(int delta_idx);
     void _transform();
+    void _print_tape(int num);
 public:
     simulator(char *path,char *input,bool verbose);
     void run();
     void nomal_print();
+    void verbose_print();
 };
 #endif

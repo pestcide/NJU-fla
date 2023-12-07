@@ -61,5 +61,4 @@ int main(int argc, char* argv[]){
     //Turing_machine TM(tm_path,verbose);
     simulator TM(tm_path,input,verbose);
     TM.run();
-    TM.nomal_print();
 }
