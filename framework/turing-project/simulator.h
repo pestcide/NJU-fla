@@ -22,6 +22,7 @@ private:
     bool _inS(char t);
     void _init();
 
+    bool _symbol_equal(string old_symbol,string new_symbol,int symbol_size);
     //!\brief return matched_delta's idx in deltas, return -1 if no one is found
     int _find_delta();
     //!\param delta_idx: matched_delta's idx

@@ -60,6 +60,14 @@ void simulator::_init(){
     zero_pos.resize(N,0);
 }
 
+bool simulator::_symbol_equal(string old_symbol,string new_symbol,int symbol_size){
+    for (int i=0;i<symbol_size;++i){
+        if (old_symbol[i]=='_'&&new_symbol[i]!='_') return false;
+        if (old_symbol[i]!='_'&&old_symbol[i]!=new_symbol[i]&&new_symbol[i]!='*') return false;
+    }
+    return true;
+}
+
 int simulator::_find_delta(){
     string _old_state=state;
     string _old_symbol;
@@ -67,7 +75,7 @@ int simulator::_find_delta(){
         _old_symbol.push_back(tape[i][head[i]+zero_pos[i]]);
     for (int i=0;i<delta_functions.size();++i)
     {
-        if (_old_state==delta_functions[i].old_state&&_old_symbol==delta_functions[i].old_symbol)
+        if (_old_state==delta_functions[i].old_state&&_symbol_equal(_old_symbol,delta_functions[i].old_symbol,_old_symbol.size()))
             return i;
     }
     return -1;
